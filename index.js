@@ -1,23 +1,25 @@
-function zigzagLevelOrder(root) {
-  if (!root) return [];
-  const result = [];
-  let isReverse = false;
-  const queue = [root];
+function ladderLength(beginWord, endWord, wordList) {
+  const wordSet = new Set(wordList);
+  if (!wordSet.has(endWord)) return 0;
+  let count = 0;
+  const queue = [beginWord];
   while (queue.length) {
     const size = queue.length;
-    const level = [];
+    count++;
     for (let i = 0; i < size; i++) {
-      const node = queue.shift();
-      if (isReverse) {
-        level.unshift(node.val);
-      } else {
-        level.push(node.val);
+      const current = queue.shift();
+      if (current === endWord) return count;
+      for (let j = 0; j < current.length; j++) {
+        for (let k = 97; k <= 122; k++) {
+          const newWord =
+            current.slice(0, j) + String.fromCharCode(k) + current.slice(j + 1);
+          if (wordSet.has(newWord)) {
+            queue.push(newWord);
+            wordSet.delete(newWord);
+          }
+        }
       }
-      if (node.left) queue.push(node.left);
-      if (node.right) queue.push(node.right);
     }
-    result.push(level);
-    isReverse = !isReverse;
   }
-  return result;
+  return 0;
 }
