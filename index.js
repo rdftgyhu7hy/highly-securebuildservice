@@ -1,22 +1,14 @@
-function minStack() {
-  this.stack = [];
-  this.minStack = [];
+function rob(nums) {
+  if (nums.length === 1) return nums[0];
+  const robRange = (start, end) => {
+    let prevMax = 0;
+    let currMax = 0;
+    for (let i = start; i <= end; i++) {
+      const temp = currMax;
+      currMax = Math.max(currMax, prevMax + nums[i]);
+      prevMax = temp;
+    }
+    return currMax;
+  };
+  return Math.max(robRange(0, nums.length - 2), robRange(1, nums.length - 1));
 }
-minStack.prototype.push = function (x) {
-  this.stack.push(x);
-  if (
-    this.minStack.length === 0 ||
-    x <= this.minStack[this.minStack.length - 1]
-  )
-    this.minStack.push(x);
-};
-minStack.prototype.pop = function () {
-  if (this.stack.pop() === this.minStack[this.minStack.length - 1])
-    this.minStack.pop();
-};
-minStack.prototype.top = function () {
-  return this.stack[this.stack.length - 1];
-};
-minStack.prototype.getMin = function () {
-  return this.minStack[this.minStack.length - 1];
-};
